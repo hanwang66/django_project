@@ -17,9 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect('/auth/login/')
     from blog.models import Blog
     from real_estate.models import RealEstate
     from stock.models import Stock
