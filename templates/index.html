@@ -22,7 +22,15 @@
 </head>
 <body>
   <div class="container">
-    <h1 style="margin-bottom: 16px;">信息管理平台</h1>
+    <div style="position:relative;">
+      <h1 style="margin-bottom: 16px;">信息管理平台</h1>
+      {% if user.is_authenticated %}
+        <div style="position:absolute;top:8px;right:0;display:flex;align-items:center;gap:12px;">
+          <span style="color:#555;">欢迎，<b>{{ user.username }}</b></span>
+          <a class="btn" href="/auth/logout/" style="background:#e65100;">登出</a>
+        </div>
+      {% endif %}
+    </div>
     <!-- 数据总览卡片，卡片可点击跳转 -->
     <div style="display:flex;justify-content:center;gap:48px;margin-bottom:36px;">
       <a href="/blog/" style="text-decoration:none;">
@@ -47,12 +55,6 @@
         </div>
       </a>
     </div>
-    {% if current_user.is_authenticated %}
-      <div style="text-align:center; margin-bottom: 24px;">
-        <span style="color:#555;">欢迎，<b>{{ current_user.username }}</b></span>
-        <a class="btn" href="/logout" style="margin-left:16px;">登出</a>
-      </div>
-    {% endif %}
 
     </div>
 </body>

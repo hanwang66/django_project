@@ -1,5 +1,32 @@
-{% extends 'base/base.html' %}
-{% block title %}注册{% endblock %}
-{% block content %}
-<!-- ...原register.html内容... -->
-{% endblock %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body style="background:#f6f8fa;">
+<div style="max-width:400px;margin:48px auto;background:#fff;border-radius:16px;box-shadow:0 2px 16px #e0e0e0;padding:36px 32px;">
+	<h2 style="text-align:center;color:#388e3c;margin-bottom:24px;">用户注册</h2>
+	{% if messages %}
+		<ul style="color:#e65100;margin-bottom:18px;">
+		{% for message in messages %}
+			<li>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	<form method="post">{% csrf_token %}
+		<label for="username" style="font-weight:bold;">用户名：</label>
+		<input type="text" name="username" id="username" required style="width:100%;padding:8px;margin-bottom:18px;border-radius:8px;border:1px solid #ccc;">
+		<label for="password" style="font-weight:bold;">密码：</label>
+		<input type="password" name="password" id="password" required style="width:100%;padding:8px;margin-bottom:18px;border-radius:8px;border:1px solid #ccc;">
+		<label for="password2" style="font-weight:bold;">确认密码：</label>
+		<input type="password" name="password2" id="password2" required style="width:100%;padding:8px;margin-bottom:18px;border-radius:8px;border:1px solid #ccc;">
+		<button type="submit" style="width:100%;background:#388e3c;color:#fff;padding:10px 0;border:none;border-radius:8px;font-size:1.1em;font-weight:bold;">注册</button>
+	</form>
+	<div style="text-align:center;margin-top:18px;">
+		<a href="/auth/login/" style="color:#388e3c;">已有账号？直接登录</a>
+	</div>
+</div>
+</body>
+</html>
