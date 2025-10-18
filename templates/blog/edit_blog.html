@@ -5,6 +5,19 @@
 <form method="post">{% csrf_token %}
 	<label>标题：</label><input type="text" name="title" value="{{ blog.title }}" required><br><br>
 	<label>作者：</label><input type="text" name="author" value="{{ blog.author }}" required><br><br>
+	<label>分类：</label>
+	<select name="category">
+		<option value="">--请选择--</option>
+		{% for category in categories %}
+		<option value="{{ category.id }}" {% if blog.category and blog.category.id == category.id %}selected{% endif %}>{{ category.name }}</option>
+		{% endfor %}
+	</select><br><br>
+	<label>标签：</label>
+	<select name="tags" multiple size="4">
+		{% for tag in tags %}
+		<option value="{{ tag.id }}" {% if tag in blog.tags.all %}selected{% endif %}>{{ tag.name }}</option>
+		{% endfor %}
+	</select><br><br>
 	<label>内容：</label><br>
 	<textarea name="content" rows="8" cols="60" required>{{ blog.content }}</textarea><br><br>
 	<button type="submit">保存</button>

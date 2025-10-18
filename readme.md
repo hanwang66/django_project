@@ -9,6 +9,7 @@
 
 2. 进入项目目录，建议使用 Python 虚拟环境：
    ```powershell
+   # Python 3.10.0
    python -m venv .venv
    .venv\Scripts\activate.bat
    ```
