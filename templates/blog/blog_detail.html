@@ -13,6 +13,44 @@
 	{% else %}无{% endif %}
 </p>
 <div style="margin:24px 0;">{{ blog.content }}</div>
+
+<h3>评论区</h3>
+<form method="post" style="margin-bottom:18px;">{% csrf_token %}
+	<input type="hidden" name="parent_id" value="">
+	<input type="text" name="user" placeholder="昵称" style="width:120px;">
+	<textarea name="content" rows="2" cols="50" required placeholder="说点什么..."></textarea>
+	<button type="submit">发表评论</button>
+</form>
+
+<ul style="list-style:none;padding-left:0;">
+	{% for comment in comments %}
+	<li style="margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:8px;">
+		<b>{{ comment.user }}</b>：{{ comment.content }}
+		{% if comment.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
+		<br><small>{{ comment.created_at|date:'Y-m-d H:i' }}</small>
+		<form method="post" style="display:inline;" onsubmit="this.parent_id.value='{{ comment.id }}';">
+			{% csrf_token %}
+			<input type="hidden" name="parent_id" value="{{ comment.id }}">
+			<input type="text" name="user" placeholder="昵称" style="width:100px;">
+			<input type="text" name="content" placeholder="回复..." style="width:180px;">
+			<button type="submit">回复</button>
+		</form>
+		<div style="margin-left:24px;">
+		{% for reply in comment.replies.all %}
+			{% if reply.is_approved %}
+			<b>{{ reply.user }}</b> 回复：{{ reply.content }}
+			<br><small>{{ reply.created_at|date:'Y-m-d H:i' }}</small>
+			{% if reply.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
+			<br>
+			{% endif %}
+		{% endfor %}
+		</div>
+	</li>
+	{% empty %}
+	<li>暂无评论。</li>
+	{% endfor %}
+</ul>
+
 <a href="/blog/{{ blog.id }}/edit/">编辑</a> |
 <a href="/blog/{{ blog.id }}/delete/">删除</a> |
 <a href="/blog/">返回列表</a>
