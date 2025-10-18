@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "custom_auth",
     "blog",
-    "info",
+    # "info",  # 已删除信息录入功能
     "stock",
     "real_estate",
 ]

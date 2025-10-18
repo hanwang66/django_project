@@ -6,8 +6,20 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="container">
+    <nav class="navbar navbar-full">
+        <div class="navbar-logo">🗂️ 信息管理平台</div>
+        <div class="navbar-links">
+            <a href="/" class="nav-link{% if request.path == '/' %} active{% endif %}">首页</a>
+            <a href="/blog/" class="nav-link{% if request.path|slice:":6" == '/blog/' %} active{% endif %}">博客</a>
+            <a href="/real_estate/" class="nav-link{% if request.path|slice:":12" == '/real_estate/' %} active{% endif %}">房地产</a>
+            <a href="/stock/" class="nav-link{% if request.path|slice:":7" == '/stock/' %} active{% endif %}">股票行情</a>
+        </div>
+    </nav>
+    <div class="container container-no-top-radius container-no-bottom-radius">
         {% block content %}{% endblock %}
     </div>
+    <footer class="footer footer-full">
+        <span>© 2025 信息管理平台 | Powered by Django</span>
+    </footer>
 </body>
 </html>

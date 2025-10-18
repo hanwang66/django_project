@@ -27,7 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("custom_auth.urls")),
     path("blog/", include("blog.urls")),
-    path("info/", include("info.urls")),
+    # path("info/", include("info.urls")),  # 已删除信息录入功能
     path("stock/", include("stock.urls")),
     path("real_estate/", include("real_estate.urls")),
 ]

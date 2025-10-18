@@ -4,10 +4,7 @@ from django.http import HttpResponse
 
 
 def info_index(request):
-	infos = [
-		{"name": "张三", "email": "zhangsan@example.com", "message": "留言内容示例1"},
-		{"name": "李四", "email": "lisi@example.com", "message": "留言内容示例2"},
-	]
+	infos = Info.objects.all().order_by('-created_at')
 	return render(request, "info/list_info.html", {"infos": infos})
 
 def info_detail(request, pk):
