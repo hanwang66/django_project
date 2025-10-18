@@ -29,7 +29,7 @@
 		<h3 style="font-size:1.3em;font-weight:500;margin-bottom:18px;color:#1976d2;">评论区</h3>
 		<form method="post" style="margin-bottom:18px;background:#f5f5f5;padding:18px 16px;border-radius:8px;">{% csrf_token %}
 			<input type="hidden" name="parent_id" value="">
-			<input type="text" name="user" placeholder="昵称" style="width:120px;margin-right:12px;">
+			<span style="color:#1976d2;font-weight:600;margin-right:12px;">{{ user.username }}</span>
 			<textarea name="content" rows="2" cols="50" required placeholder="说点什么..." style="vertical-align:middle;"></textarea>
 			<button type="submit" style="background:#1976d2;color:#fff;border:none;padding:6px 18px;border-radius:6px;margin-left:12px;">发表评论</button>
 		</form>
@@ -41,20 +41,35 @@
 					<span style="color:#1976d2;">{{ comment.user }}</span>：{{ comment.content }}
 					{% if comment.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
 				</div>
-				<div style="font-size:0.98em;color:#888;margin-bottom:6px;">
-					{{ comment.created_at|date:'Y-m-d H:i' }}
-					<form method="post" style="display:inline;margin-left:18px;">
+				<div style="font-size:0.98em;color:#888;margin-bottom:6px;display:flex;align-items:center;gap:12px;">
+					<span>{{ comment.created_at|date:'Y-m-d H:i' }}</span>
+					<form method="post" style="display:inline;">
 						{% csrf_token %}
 						<input type="hidden" name="like_comment_id" value="{{ comment.id }}">
 						<button type="submit" style="background:#ffecb3;color:#e65100;border:none;padding:2px 10px;border-radius:6px;cursor:pointer;">
 							👍 点赞 <span style="font-weight:600;">{{ comment.likes }}</span>
 						</button>
 					</form>
+					{% if user.is_superuser or user.is_authenticated and comment.user == user.username %}
+						<!-- 编辑评论 -->
+						<form method="post" style="display:inline;">
+							{% csrf_token %}
+							<input type="hidden" name="edit_comment_id" value="{{ comment.id }}">
+							<input type="text" name="edit_content" value="{{ comment.content }}" style="width:120px;margin-right:6px;">
+							<button type="submit" style="background:#e3f2fd;color:#1976d2;border:none;padding:2px 10px;border-radius:6px;">修改</button>
+						</form>
+						<!-- 删除评论 -->
+						<form method="post" style="display:inline;">
+							{% csrf_token %}
+							<input type="hidden" name="delete_comment_id" value="{{ comment.id }}">
+							<button type="submit" style="background:#ffcdd2;color:#c62828;border:none;padding:2px 10px;border-radius:6px;">删除</button>
+						</form>
+					{% endif %}
 				</div>
 				<form method="post" style="display:inline;" onsubmit="this.parent_id.value='{{ comment.id }}';">
 					{% csrf_token %}
 					<input type="hidden" name="parent_id" value="{{ comment.id }}">
-					<input type="text" name="user" placeholder="昵称" style="width:100px;margin-right:8px;">
+					<span style="color:#388e3c;font-weight:600;margin-right:8px;">{{ user.username }}</span>
 					<input type="text" name="content" placeholder="回复..." style="width:180px;margin-right:8px;">
 					<button type="submit" style="background:#e3f2fd;color:#1976d2;border:none;padding:4px 12px;border-radius:6px;">回复</button>
 				</form>
