@@ -1,3 +1,4 @@
+
 {% extends 'base/base.html' %}
 {% block title %}博客列表{% endblock %}
 {% block content %}
@@ -5,24 +6,4 @@
 <div style="margin-bottom:16px;">
 <!-- 已移除返回首页按钮 -->
 </div>
-<a href="/blog/add/" style="display:inline-block;margin-bottom:18px;">添加博客</a>
-<ul>
-	{% for blog in blogs %}
-	<li style="margin-bottom:24px;">
-		<h2><a href="/blog/{{ blog.id }}/">{{ blog.title }}</a></h2>
-		<p>作者：{{ blog.author }} | 创建时间：{{ blog.created_at|date:'Y-m-d H:i' }}</p>
-		<p>
-			分类：{% if blog.category %}{{ blog.category.name }}{% else %}无{% endif %}<br>
-			标签：
-			{% if blog.tags.all %}
-				{% for tag in blog.tags.all %}
-					<span style="background:#e0e0e0;padding:2px 8px;border-radius:8px;margin-right:4px;">{{ tag.name }}</span>
-				{% empty %}无{% endfor %}
-			{% else %}无{% endif %}
-		</p>
-	</li>
-	{% empty %}
-	<li>暂无博客内容。</li>
-	{% endfor %}
-</ul>
 {% endblock %}

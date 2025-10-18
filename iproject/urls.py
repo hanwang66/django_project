@@ -22,6 +22,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 def index(request):
+    if not request.user.is_authenticated:
+        return redirect('/auth/login/')
     from blog.models import Blog
     from real_estate.models import RealEstate
     from stock.models import Stock

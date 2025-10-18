@@ -17,7 +17,23 @@ def blog_detail(request, pk):
 				comment.likes += 1
 				comment.save()
 			return redirect(f"/blog/{pk}/")
-		user = request.POST.get("user", "匿名")
+		# 评论编辑
+		if request.POST.get("edit_comment_id"):
+			comment_id = request.POST.get("edit_comment_id")
+			comment = Comment.objects.filter(id=comment_id).first()
+			if comment and (request.user.is_superuser or (request.user.is_authenticated and comment.user == request.user.username)):
+				new_content = request.POST.get("edit_content", "")
+				comment.content = new_content
+				comment.save()
+			return redirect(f"/blog/{pk}/")
+		# 评论删除
+		if request.POST.get("delete_comment_id"):
+			comment_id = request.POST.get("delete_comment_id")
+			comment = Comment.objects.filter(id=comment_id).first()
+			if comment and (request.user.is_superuser or (request.user.is_authenticated and comment.user == request.user.username)):
+				comment.delete()
+			return redirect(f"/blog/{pk}/")
+		user = request.user.username if request.user.is_authenticated else "匿名"
 		content = request.POST.get("content", "")
 		parent_id = request.POST.get("parent_id")
 		parent = Comment.objects.filter(id=parent_id).first() if parent_id else None
@@ -53,7 +69,8 @@ def blog_add(request):
 	tags = Tag.objects.all()
 	if request.method == "POST":
 		title = request.POST.get("title")
-		author = request.POST.get("author")
+		# 强制使用当前登录用户名
+		author = request.user.username if request.user.is_authenticated else "匿名"
 		content = request.POST.get("content")
 		category_id = request.POST.get("category")
 		tag_ids = request.POST.getlist("tags")
@@ -62,15 +79,19 @@ def blog_add(request):
 		if tag_ids:
 			blog.tags.set(Tag.objects.filter(id__in=tag_ids))
 		return redirect("/blog/")
-	return render(request, "blog/add_blog.html", {"categories": categories, "tags": tags})
+	return render(request, "blog/add_blog.html", {"categories": categories, "tags": tags, "user": request.user})
 
 def blog_edit(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
+	# 权限校验：仅作者或admin可编辑
+	if not (request.user.is_authenticated and (request.user == blog.user or request.user.is_superuser or request.user.username == blog.author)):
+		return HttpResponse('无权编辑此博客', status=403)
 	categories = Category.objects.all()
 	tags = Tag.objects.all()
 	if request.method == "POST":
 		blog.title = request.POST.get("title")
-		blog.author = request.POST.get("author")
+		# 强制使用当前登录用户名
+		blog.author = request.user.username if request.user.is_authenticated else "匿名"
 		blog.content = request.POST.get("content")
 		category_id = request.POST.get("category")
 		tag_ids = request.POST.getlist("tags")
@@ -81,10 +102,13 @@ def blog_edit(request, pk):
 		else:
 			blog.tags.clear()
 		return redirect(f"/blog/{pk}/")
-	return render(request, "blog/edit_blog.html", {"blog": blog, "categories": categories, "tags": tags})
+	return render(request, "blog/edit_blog.html", {"blog": blog, "categories": categories, "tags": tags, "user": request.user})
 
 def blog_delete(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
+	# 权限校验：仅作者或admin可删除
+	if not (request.user.is_authenticated and (request.user == blog.user or request.user.is_superuser)):
+		return HttpResponse('无权删除此博客', status=403)
 	if request.method == "POST":
 		blog.delete()
 		return redirect("/blog/")
