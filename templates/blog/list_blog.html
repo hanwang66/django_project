@@ -2,8 +2,25 @@
 {% extends 'base/base.html' %}
 {% block title %}博客列表{% endblock %}
 {% block content %}
-<h1>博客列表</h1>
-<div style="margin-bottom:16px;">
-<!-- 已移除返回首页按钮 -->
+<h1 style="text-align:center;color:#2c3e50;margin-bottom:24px;">博客列表</h1>
+<div style="margin-bottom:24px;text-align:right;">
+	<a href="/blog/add/" class="btn" style="background:#1976d2;color:#fff;padding:8px 28px;border-radius:6px;text-decoration:none;font-weight:bold;">添加博客</a>
 </div>
+{% if blogs %}
+<div style="display:flex;flex-wrap:wrap;gap:32px;justify-content:center;">
+	{% for blog in blogs %}
+	<div style="background:#fff;border-radius:12px;box-shadow:0 2px 8px #e0e0e0;padding:32px 28px;min-width:320px;max-width:480px;flex:1;">
+		<h2 style="margin-bottom:12px;"><a href="/blog/{{ blog.id }}/" style="color:#1976d2;text-decoration:none;">{{ blog.title }}</a></h2>
+	<div style="color:#888;font-size:0.95em;margin-bottom:8px;">作者：{{ blog.author }} | 分类：{% if blog.category %}{{ blog.category.name }}{% else %}无{% endif %} | 创建时间：{{ blog.created_at|date:'Y-m-d H:i' }}</div>
+		<div style="margin-bottom:12px;">{{ blog.content|truncatechars:80 }}</div>
+		<div>
+			<a href="/blog/{{ blog.id }}/" style="color:#388e3c;font-weight:500;">详情</a>
+			<a href="/blog/{{ blog.id }}/edit/" style="color:#1976d2;font-weight:500;margin-left:18px;">编辑</a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% else %}
+<div style="text-align:center;color:#888;background:#fafafa;padding:48px 0;border-radius:12px;box-shadow:0 2px 8px #eee;">暂无博客内容。</div>
+{% endif %}
 {% endblock %}
