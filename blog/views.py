@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Category, Tag
+from .models import Blog, Category, Tag, Comment
 from django.http import HttpResponse
 
 def blog_index(request):
@@ -8,7 +8,38 @@ def blog_index(request):
 
 def blog_detail(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
-	return render(request, "blog/blog_detail.html", {"blog": blog})
+	comments = Comment.objects.filter(blog=blog, parent=None, is_approved=True).order_by('-created_at')
+	if request.method == "POST":
+		user = request.POST.get("user", "匿名")
+		content = request.POST.get("content", "")
+		parent_id = request.POST.get("parent_id")
+		parent = Comment.objects.filter(id=parent_id).first() if parent_id else None
+		# 简单敏感词过滤
+		sensitive_words = ["傻逼", "垃圾", "fuck"]
+		has_sensitive = any(word in content for word in sensitive_words)
+		comment = Comment.objects.create(
+			blog=blog, user=user, content=content, parent=parent,
+			is_approved=not has_sensitive, has_sensitive=has_sensitive
+		)
+		return redirect(f"/blog/{pk}/")
+	return render(request, "blog/blog_detail.html", {"blog": blog, "comments": comments})
+
+	blog = get_object_or_404(Blog, pk=pk)
+	comments = Comment.objects.filter(blog=blog, parent=None, is_approved=True).order_by('-created_at')
+	if request.method == "POST":
+		user = request.POST.get("user", "匿名")
+		content = request.POST.get("content", "")
+		parent_id = request.POST.get("parent_id")
+		parent = Comment.objects.filter(id=parent_id).first() if parent_id else None
+		# 简单敏感词过滤
+		sensitive_words = ["傻逼", "垃圾", "fuck"]
+		has_sensitive = any(word in content for word in sensitive_words)
+		comment = Comment.objects.create(
+			blog=blog, user=user, content=content, parent=parent,
+			is_approved=not has_sensitive, has_sensitive=has_sensitive
+		)
+		return redirect(f"/blog/{pk}/")
+	return render(request, "blog/blog_detail.html", {"blog": blog, "comments": comments})
 
 def blog_add(request):
 	categories = Category.objects.all()
