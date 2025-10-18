@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑信息</title>
+</head>
+<body>
+    <h1>编辑信息</h1>
+    <form method="post">
+        姓名：<input type="text" name="name" value="{{ info[1] }}" required><br>
+        邮箱：<input type="email" name="email" value="{{ info[2] }}" required><br>
+        信息：<textarea name="message">{{ info[3] }}</textarea><br>
+        <input type="submit" value="保存">
+    </form>
+    <p><a href="/list">返回列表</a></p>
+</body>
+</html>

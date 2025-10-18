@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>英语学习记录列表</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h1 { text-align: center; color: #27ae60; margin-bottom: 32px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #27ae60; color: #fff; }
+        tr:nth-child(even) { background: #f2f6fa; }
+        a { color: #27ae60; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        .add-btn { display: inline-block; background: #27ae60; color: #fff; padding: 8px 20px; border-radius: 5px; margin-bottom: 24px; text-align: center; }
+        .add-btn:hover { background: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="margin-bottom:16px;">
+            <a href="/" style="background:#eee;padding:6px 18px;border-radius:5px;text-decoration:none;color:#333;">返回首页</a>
+        </div>
+        <h1>英语学习记录列表</h1>
+        <a class="add-btn" href="/english/add">添加新记录</a>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>日期</th>
+                <th>学习内容</th>
+            </tr>
+            {% for record in records %}
+            <tr>
+                <td>{{ record[0] }}</td>
+                <td>{{ record[1] }}</td>
+                <td>{{ record[2] }}</td>
+                <td>
+                    <a href="/english/edit/{{ record[0] }}">编辑</a>
+                    <form method="post" action="/english/delete/{{ record[0] }}" style="display:inline;margin-left:8px;">
+                        <button type="submit" style="background:#e74c3c;color:#fff;border:none;padding:4px 12px;border-radius:5px;font-weight:bold;cursor:pointer;">删除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><a href="/">返回首页</a></p>
+    </div>
+</body>
+</html>

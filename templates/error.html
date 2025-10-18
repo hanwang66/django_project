@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>系统错误</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; }
+        .container { max-width: 500px; margin: 80px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #ccc; padding: 32px; text-align: center; }
+        h1 { color: #e74c3c; margin-bottom: 24px; }
+        .error-msg { color: #888; margin-bottom: 24px; }
+        a { color: #2980b9; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>系统发生错误</h1>
+        <div class="error-msg">{{ error }}</div>
+        <p><a href="/">返回首页</a></p>
+    </div>
+</body>
+</html>

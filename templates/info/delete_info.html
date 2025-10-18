@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block title %}删除信息{% endblock %}
+{% block content %}
+<h1>删除信息</h1>
+<p>确定要删除信息《{{ info.name }}》吗？</p>
+<form method="post">{% csrf_token %}
+    <button type="submit">确认删除</button>
+</form>
+<a href="/info/{{ info.id }}/">返回信息详情</a>
+{% endblock %}

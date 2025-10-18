@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% block title %}录入房地产信息{% endblock %}
+{% block content %}
+<h2>录入房地产信息</h2>
+<form method="post">
+	{% csrf_token %}
+	<label>小区：</label><input type="text" name="community" required><br><br>
+	<label>城市：</label><input type="text" name="city" required><br><br>
+	<label>面积：</label><input type="text" name="area" required><br><br>
+	<label>楼层：</label><input type="text" name="floor" required><br><br>
+	<label>价格(万元)：</label><input type="text" name="price" required><br><br>
+	<label>时间：</label><input type="text" name="date" required placeholder="如 2025-10-17"><br><br>
+	<button type="submit">提交</button>
+</form>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% block title %}编辑房地产信息{% endblock %}
+{% block content %}
+<h2>编辑房地产信息</h2>
+<form method="post">
+	{% csrf_token %}
+	<label>小区：</label><input type="text" name="community" value="{{ estate.community }}" required><br><br>
+	<label>城市：</label><input type="text" name="city" value="{{ estate.city }}" required><br><br>
+	<label>面积：</label><input type="text" name="area" value="{{ estate.area }}" required><br><br>
+	<label>楼层：</label><input type="text" name="floor" value="{{ estate.floor }}" required><br><br>
+	<label>价格(万元)：</label><input type="text" name="price" value="{{ estate.price }}" required><br><br>
+	<label>时间：</label><input type="date" name="date" value="{{ estate.date }}" required><br><br>
+	<button type="submit">保存</button>
+</form>
+<a href="{% url 'realestate_index' %}" class="btn btn-secondary" style="margin-top: 16px;">返回列表</a>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block title %}博客详情{% endblock %}
+{% block content %}
+<h1>{{ blog.title }}</h1>
+<p>作者：{{ blog.author }} | 创建时间：{{ blog.created_at|date:'Y-m-d H:i' }}</p>
+<div style="margin:24px 0;">{{ blog.content }}</div>
+<a href="/blog/{{ blog.id }}/edit/">编辑</a> |
+<a href="/blog/{{ blog.id }}/delete/">删除</a> |
+<a href="/blog/">返回列表</a>
+{% endblock %}

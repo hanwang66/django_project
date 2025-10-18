@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% block title %}自定义股票行情{% endblock %}
+{% block content %}
+<h1>自定义股票行情</h1>
+<p>日期：{{ today }}</p>
+{% if code %}
+    <table style="width:400px;">
+        <tr><th>股票</th><th>股价</th></tr>
+        <tr><td>{{ stock_name }}（{{ code }}）</td><td>{{ price if price else '获取失败' }}</td></tr>
+    </table>
+{% else %}
+    <p>请输入股票代码查询。</p>
+{% endif %}
+<a href="/stock" style="display:inline-block;margin-top:18px;">返回股票行情</a>
+{% endblock %}

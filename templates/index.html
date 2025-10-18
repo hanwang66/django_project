@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>信息录入系统首页</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; margin: 0; padding: 0; }
+        .container { max-width: 1600px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #ccc; padding: 64px; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 32px; }
+        h2 { margin-top: 0; }
+        a { color: #2980b9; text-decoration: none; font-weight: bold; }
+        a.btn { display: inline-block; background: #2980b9; color: #fff; padding: 12px 32px; border-radius: 5px; margin: 12px 0; font-size: 18px; transition: background 0.2s; }
+        a.btn:hover { background: #3498db; }
+        .tab-layout { display: flex; gap: 0; margin-top: 24px; }
+        .tabs-vertical { display: flex; flex-direction: column; background: #f6f8fa; border-radius: 10px 0 0 10px; box-shadow: 0 2px 8px #eee; min-width: 180px; }
+        .tab-btn { background: #f6f8fa; border: none; outline: none; padding: 24px 0; font-size: 20px; color: #2980b9; cursor: pointer; border-radius: 10px 0 0 10px; margin: 0; font-weight: bold; transition: background 0.2s, color 0.2s; text-align: left; padding-left: 40px; }
+        .tab-btn.active { background: #fff; color: #2c3e50; box-shadow: 2px 0 8px #eee; }
+        .tab-contents { flex: 1; background: #fff; border-radius: 0 10px 10px 0; box-shadow: 0 2px 8px #eee; padding: 48px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-bottom: 16px;">信息管理平台</h1>
+        {% if current_user.is_authenticated %}
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="color:#555;">欢迎，<b>{{ current_user.username }}</b></span>
+                <a class="btn" href="/logout" style="margin-left:16px;">登出</a>
+            </div>
+        {% endif %}
+        <div class="tabs">
+          <ul class="tab-list">
+            <li><a href="/blog/">博客</a></li>
+            <li><a href="/info/">信息</a></li>
+            <li><a href="/stock/">股票</a></li>
+            <li><a href="/real_estate/">房地产</a></li>
+          </ul>
+        </div>
+        <style>
+        .tabs { margin-top: 32px; }
+        .tab-list { list-style: none; padding: 0; display: flex; gap: 24px; }
+        .tab-list li { display: inline; }
+          .tab-list a { text-decoration: none; padding: 8px 24px; background: #f0f0f0; border-radius: 6px; color: #333; transition: background 0.2s, color 0.2s; }
+          .tab-list a.active, .tab-list a:hover { background: #2980b9; color: #fff; }
+        .tab-content { margin-top: 24px; }
+          .tab-content { display: none; }
+          .tab-content.active { display: block; }
+        </style>
+          <!-- 移除多余的 showTab 脚本 -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% block title %}房价变化趋势{% endblock %}
+{% block content %}
+<h1 style="text-align:center;color:#2c3e50;margin-bottom:18px;">房价变化趋势</h1>
+<div style="margin-bottom:32px;padding:18px 32px;background:#f6f8fa;border-radius:12px;box-shadow:0 2px 8px #e0e0e0;display:flex;flex-direction:column;align-items:flex-start;gap:12px;">
+    <div style="display:flex;align-items:center;gap:18px;">
+        <b>房价变化趋势（按城市列举小区单价变化幅度）</b>
+        <form method="get" style="display:inline;">
+            <label style="font-weight:bold;">每城市展示小区数量：</label>
+            <input type="number" name="top_n" min="1" max="20" value="{{ top_n }}" style="width:60px;padding:4px 8px;border-radius:5px;border:1px solid #ccc;">
+            <button type="submit" style="padding:4px 16px;background:#2980b9;color:#fff;border:none;border-radius:5px;font-weight:bold;margin-left:8px;">确定</button>
+        </form>
+    </div>
+    {% if trend_list and trend_list|length > 0 %}
+        {% for city_group in trend_list %}
+        <div style="margin-bottom:24px;width:100%;">
+            <div style="font-size:18px;font-weight:bold;color:#2980b9;margin-bottom:8px;">{{ city_group.city }}</div>
+            <table style="width:auto;border-collapse:separate;border-spacing:0 8px;background:#fff;border-radius:12px;box-shadow:0 2px 12px #e0e0e0;overflow:hidden;">
+                <tr style="background:#2980b9;color:#fff;font-weight:bold;border-radius:12px;">
+                    <th style="padding:10px 22px;border-top-left-radius:12px;">小区</th>
+                    <th style="padding:10px 22px;">首单价(元/㎡)</th>
+                    <th style="padding:10px 22px;">末单价(元/㎡)</th>
+                    <th style="padding:10px 22px;border-top-right-radius:12px;">变化幅度</th>
+                </tr>
+                {% for t in city_group.trends %}
+                {% if forloop.counter0|divisibleby:2 %}
+                <tr style="box-shadow:0 1px 6px #eee;border-radius:8px;background:#f8fafd;">
+                {% else %}
+                <tr style="box-shadow:0 1px 6px #eee;border-radius:8px;background:#fff;">
+                {% endif %}
+                    <td style="padding:8px 22px;">{{ t.community }}</td>
+                    <td style="padding:8px 22px;color:#27ae60;font-weight:bold;">{{ t.first_unit_price }}</td>
+                    <td style="padding:8px 22px;color:#e67e22;font-weight:bold;">{{ t.last_unit_price }}</td>
+                    {% if t.change > 0 %}
+                    <td style="padding:8px 22px;color:#e67e22;font-weight:bold;background:#fffbe6;border-radius:6px;">{{ t.change }}%</td>
+                    {% elif t.change < 0 %}
+                    <td style="padding:8px 22px;color:#27ae60;font-weight:bold;background:#eaffea;border-radius:6px;">{{ t.change }}%</td>
+                    {% else %}
+                    <td style="padding:8px 22px;color:#888;font-weight:bold;background:#f6f8fa;border-radius:6px;">{{ t.change }}%</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="color:#888;">暂无可分析的房价变化趋势。</div>
+    {% endif %}
+</div>
+<div style="margin-bottom:16px;">
+    <a href="/real_estate/" style="background:#eee;padding:6px 18px;border-radius:5px;text-decoration:none;color:#333;">返回房地产信息列表</a>
+</div>
+{% endblock %}

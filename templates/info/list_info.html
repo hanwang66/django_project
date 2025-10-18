@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% block title %}信息列表{% endblock %}
+{% block content %}
+<h1>信息列表</h1>
+<div style="margin-bottom:16px;">
+	<a href="/" style="background:#eee;padding:6px 18px;border-radius:5px;text-decoration:none;color:#333;">返回首页</a>
+</div>
+<a href="/info/add/" style="display:inline-block;margin-bottom:18px;">添加信息</a>
+<ul>
+	{% for info in infos %}
+	<li style="margin-bottom:24px;">
+		<strong><a href="/info/{{ info.id }}/">{{ info.name }}</a></strong> ({{ info.email }})<br>
+		<span>{{ info.message|truncatechars:40 }}</span>
+	</li>
+	{% empty %}
+	<li>暂无信息。</li>
+	{% endfor %}
+</ul>
+{% endblock %}

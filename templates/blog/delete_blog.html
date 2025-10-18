@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block title %}删除博客{% endblock %}
+{% block content %}
+<h1>删除博客</h1>
+<p>确定要删除博客《{{ blog.title }}》吗？</p>
+<form method="post">{% csrf_token %}
+    <button type="submit">确认删除</button>
+</form>
+<a href="/blog/{{ blog.id }}/">返回博客详情</a>
+{% endblock %}

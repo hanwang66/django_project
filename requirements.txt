@@ -1,0 +1,12 @@
+
+# Django 主体依赖
+Django>=5.0
+
+# Flask 相关依赖（如需 Flask 功能）
+Flask
+Flask-Login
+
+# 数据处理与导出
+pandas
+openpyxl
+reportlab

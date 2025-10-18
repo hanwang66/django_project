@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block title %}信息详情{% endblock %}
+{% block content %}
+<h1>{{ info.name }}</h1>
+<p>邮箱：{{ info.email }} | 创建时间：{{ info.created_at|date:'Y-m-d H:i' }}</p>
+<div style="margin:24px 0;">{{ info.message }}</div>
+<a href="/info/{{ info.id }}/edit/">编辑</a> |
+<a href="/info/{{ info.id }}/delete/">删除</a> |
+<a href="/info/">返回列表</a>
+{% endblock %}

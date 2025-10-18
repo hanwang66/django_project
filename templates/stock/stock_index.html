@@ -1,0 +1,35 @@
+{% extends 'base/base.html' %}
+{% block title %}股票行情{% endblock %}
+{% block content %}
+<h1>股票行情</h1>
+<div style="margin-bottom:16px;">
+    <a href="/" style="background:#eee;padding:6px 18px;border-radius:5px;text-decoration:none;color:#333;">返回首页</a>
+</div>
+<p>日期：{{ today }}</p>
+<form method="get" action="/stock/custom" style="margin-bottom:18px;">
+    <label for="code">自定义股票代码：</label>
+    <input type="text" id="code" name="code" placeholder="如 600519 或 000001" style="width:120px;">
+    <select name="market">
+        <option value="1">沪市</option>
+        <option value="0">深市</option>
+    </select>
+    <button type="submit">添加观察</button>
+</form>
+<table style="width:400px;">
+    <tr><th>股票</th><th>股价</th></tr>
+    <tr><td>伊利股份（600887.SH）</td><td>{% if yili_price %}{{ yili_price }}{% else %}获取失败{% endif %}</td></tr>
+    <tr><td>贵州茅台（600519.SH）</td><td>{% if maotai_price %}{{ maotai_price }}{% else %}获取失败{% endif %}</td></tr>
+    <tr><td>平安银行（000001.SZ）</td><td>{% if pingan_price %}{{ pingan_price }}{% else %}获取失败{% endif %}</td></tr>
+    <tr><td>长江电力（600900.SH）</td><td>{% if cjdl_price %}{{ cjdl_price }}{% else %}获取失败{% endif %}</td></tr>
+</table>
+
+{% if custom_results and custom_results|length > 0 %}
+<h2 style="margin-top:32px;">自定义观察股票</h2>
+<table style="width:400px;">
+    <tr><th>股票</th><th>股价</th></tr>
+    {% for s in custom_results %}
+    <tr><td>{{ s.name }}（{{ s.code }}）</td><td>{% if s.price %}{{ s.price }}{% else %}获取失败{% endif %}</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

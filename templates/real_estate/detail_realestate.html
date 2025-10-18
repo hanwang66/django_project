@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% block title %}房地产详情{% endblock %}
+{% block content %}
+<h2>房地产详情</h2>
+<ul>
+	<li><b>小区：</b>{{ estate.community }}</li>
+	<li><b>城市：</b>{{ estate.city }}</li>
+	<li><b>面积：</b>{{ estate.area }}</li>
+	<li><b>楼层：</b>{{ estate.floor }}</li>
+	<li><b>价格(万元)：</b>{{ estate.price }}</li>
+	<li><b>时间：</b>{{ estate.date }}</li>
+</ul>
+<a href="/real_estate/{{ estate.id }}/edit/">编辑</a> |
+<form method="post" action="/real_estate/{{ estate.id }}/delete/" style="display:inline;">
+	{% csrf_token %}
+	<button type="submit" onclick="return confirm('确定要删除吗？')">删除</button>
+</form>
+<a href="/real_estate/">返回列表</a>
+{% endblock %}

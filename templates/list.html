@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>信息列表</title>
+</head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>信息列表</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 32px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
+        th { background: #2980b9; color: #fff; }
+        tr:nth-child(even) { background: #f2f6fa; }
+        a, button { color: #2980b9; text-decoration: none; font-weight: bold; border: none; background: none; cursor: pointer; }
+        a:hover, button:hover { text-decoration: underline; }
+        .actions { white-space: nowrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>信息列表</h1>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>邮箱</th>
+                <th>信息</th>
+                <th>操作</th>
+            </tr>
+            {% for info in infos %}
+            <tr>
+                <td>{{ info[0] }}</td>
+                <td>{{ info[1] }}</td>
+                <td>{{ info[2] }}</td>
+                <td>{{ info[3] }}</td>
+                <td class="actions">
+                    <a href="/detail/{{ info[0] }}">详情</a> |
+                    <a href="/edit/{{ info[0] }}">编辑</a> |
+                    <form action="/delete/{{ info[0] }}" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('确定要删除吗？')">删除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><a href="/">返回首页</a></p>
+    </div>
+</body>
+</html>

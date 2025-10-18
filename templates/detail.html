@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>信息详情</title>
+</head>
+<body>
+    <h1>信息详情</h1>
+    <p>ID：{{ info[0] }}</p>
+    <p>姓名：{{ info[1] }}</p>
+    <p>邮箱：{{ info[2] }}</p>
+    <p>信息：{{ info[3] }}</p>
+    <p>
+        <a href="/edit/{{ info[0] }}">编辑</a>
+        <form action="/delete/{{ info[0] }}" method="post" style="display:inline;">
+            <button type="submit" onclick="return confirm('确定要删除吗？')">删除</button>
+        </form>
+    </p>
+    <p><a href="/list">返回列表</a></p>
+</body>
+</html>

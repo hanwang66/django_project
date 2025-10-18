@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>博客详情</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h1 { color: #2980b9; margin-bottom: 16px; }
+        .meta { color: #888; font-size: 14px; margin-bottom: 24px; }
+        .content { color: #333; font-size: 16px; margin-bottom: 32px; white-space: pre-line; }
+        a { color: #2980b9; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ blog[1] }}</h1>
+        <div class="meta">作者：{{ blog[2] }}</div>
+        <div class="content">{{ blog[3] }}</div>
+        <hr style="margin:32px 0;">
+        <div style="margin-bottom:24px;">
+            <form method="post" action="/blog/{{ blog[0] }}/like" style="display:inline;">
+                <button type="submit" style="background:#e67e22;color:#fff;border:none;padding:8px 20px;border-radius:5px;font-weight:bold;cursor:pointer;">点赞</button>
+            </form>
+            <form method="post" action="/blog/{{ blog[0] }}/unlike" style="display:inline;">
+                <button type="submit" style="background:#bdc3c7;color:#fff;border:none;padding:8px 20px;border-radius:5px;font-weight:bold;cursor:pointer;">取消点赞</button>
+            </form>
+            <span style="margin-left:16px;">当前点赞数：{{ like_count }}</span>
+        </div>
+        <div style="margin-bottom:32px;">
+            <h3 style="color:#2980b9;">评论</h3>
+            <form method="post" action="/blog/{{ blog[0] }}/comment" style="margin-bottom:16px;">
+                <textarea name="content" required style="width:100%;min-height:60px;border-radius:5px;border:1px solid #ccc;padding:8px;"></textarea>
+                <input type="submit" value="发表评论" style="background:#2980b9;color:#fff;border:none;padding:8px 20px;border-radius:5px;font-weight:bold;cursor:pointer;margin-top:8px;">
+            </form>
+            <div style="margin-top:16px;">
+                {% for c in comments %}
+                    <div style="background:#f9fafc;border-radius:6px;padding:12px;margin-bottom:10px;">
+                        <b>{{ c[0] }}</b> <span style="color:#888;font-size:12px;">{{ c[2] }}</span><br>
+                        <span>{{ c[1] }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <p><a href="/blog/list">返回博客列表</a> | <a href="/">返回首页</a></p>
+    </div>
+</body>
+</html>
