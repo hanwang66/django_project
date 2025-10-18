@@ -2,46 +2,8 @@
 {% extends 'base/base.html' %}
 {% block title %}博客列表{% endblock %}
 {% block content %}
-<div style="max-width:900px;margin:32px auto;">
-	<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-		<h1 style="font-size:2em;font-weight:600;color:#1976d2;margin:0;">博客列表</h1>
-		<a href="/blog/add/" style="background:#1976d2;color:#fff;padding:8px 22px;border-radius:8px;text-decoration:none;font-weight:500;box-shadow:0 2px 8px #e3f2fd;">➕ 添加博客</a>
-	</div>
-	<a href="/" style="background:#eee;padding:6px 18px;border-radius:5px;text-decoration:none;color:#333;">返回首页</a>
-	<div style="margin-top:24px;">
-		{% for blog in blogs %}
-		<div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px #eee;padding:28px 32px;margin-bottom:32px;display:flex;align-items:flex-start;gap:32px;">
-			<div style="width:64px;height:64px;border-radius:50%;background:#e3f2fd;display:flex;align-items:center;justify-content:center;font-size:2em;color:#1976d2;font-weight:700;">
-				{{ blog.author|slice:":1"|upper }}
-			</div>
-			<div style="flex:1;">
-				<div style="display:flex;align-items:center;justify-content:space-between;">
-					<h2 style="margin:0 0 8px 0;font-size:1.4em;font-weight:600;"><a href="/blog/{{ blog.id }}/" style="color:#1976d2;text-decoration:none;">{{ blog.title }}</a></h2>
-					<span style="color:#888;font-size:0.98em;">{{ blog.created_at|date:'Y-m-d H:i' }}</span>
-				</div>
-				<div style="color:#555;font-size:1em;margin-bottom:8px;">
-					作者：<span style="color:#1976d2;font-weight:500;">{{ blog.author }}</span>
-				</div>
-				<div style="margin-bottom:8px;">
-					<span style="color:#888;">分类：</span>
-					<span style="background:#e3f2fd;color:#1976d2;padding:2px 12px;border-radius:8px;font-size:0.98em;">
-						{% if blog.category %}{{ blog.category.name }}{% else %}无{% endif %}
-					</span>
-					<span style="color:#888;margin-left:18px;">标签：</span>
-					{% for tag in blog.tags.all %}
-						<span style="background:#ffe0b2;color:#e65100;padding:2px 10px;border-radius:8px;margin-right:6px;font-size:0.98em;">{{ tag.name }}</span>
-					{% empty %}<span style="color:#bbb;">无</span>{% endfor %}
-				</div>
-				<div style="margin-top:12px;">
-					<a href="/blog/{{ blog.id }}/" style="color:#1976d2;margin-right:18px;font-weight:500;">详情</a>
-					<a href="/blog/{{ blog.id }}/edit/" style="color:#388e3c;margin-right:18px;font-weight:500;">编辑</a>
-					<a href="/blog/{{ blog.id }}/delete/" style="color:#e65100;font-weight:500;">删除</a>
-				</div>
-			</div>
-		</div>
-		{% empty %}
-		<div style="color:#bbb;text-align:center;padding:48px 0;font-size:1.2em;">暂无博客内容。</div>
-		{% endfor %}
-	</div>
+<h1>博客列表</h1>
+<div style="margin-bottom:16px;">
+<!-- 已移除返回首页按钮 -->
 </div>
 {% endblock %}

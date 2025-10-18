@@ -1,61 +1,28 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>信息录入系统首页</title>
-    <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; margin: 0; padding: 0; }
-        .container { max-width: 1600px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #ccc; padding: 64px; }
-        h1 { text-align: center; color: #2c3e50; margin-bottom: 32px; }
-        h2 { margin-top: 0; }
-        a { color: #2980b9; text-decoration: none; font-weight: bold; }
-        a.btn { display: inline-block; background: #2980b9; color: #fff; padding: 12px 32px; border-radius: 5px; margin: 12px 0; font-size: 18px; transition: background 0.2s; }
-        a.btn:hover { background: #3498db; }
-        .tab-layout { display: flex; gap: 0; margin-top: 24px; }
-        .tabs-vertical { display: flex; flex-direction: column; background: #f6f8fa; border-radius: 10px 0 0 10px; box-shadow: 0 2px 8px #eee; min-width: 180px; }
-        .tab-btn { background: #f6f8fa; border: none; outline: none; padding: 24px 0; font-size: 20px; color: #2980b9; cursor: pointer; border-radius: 10px 0 0 10px; margin: 0; font-weight: bold; transition: background 0.2s, color 0.2s; text-align: left; padding-left: 40px; }
-        .tab-btn.active { background: #fff; color: #2c3e50; box-shadow: 2px 0 8px #eee; }
-        .tab-contents { flex: 1; background: #fff; border-radius: 0 10px 10px 0; box-shadow: 0 2px 8px #eee; padding: 48px; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-    </style>
-</head>
-<body>
-  <div class="container">
-    <div style="position:relative;">
-      <h1 style="margin-bottom: 16px;">信息管理平台</h1>
-      {% if user.is_authenticated %}
-        <div style="position:absolute;top:8px;right:0;display:flex;align-items:center;gap:12px;">
-          <span style="color:#555;">欢迎，<b>{{ user.username }}</b></span>
-          <a class="btn" href="/auth/logout/" style="background:#e65100;">登出</a>
-        </div>
-      {% endif %}
+{% extends 'base/base.html' %}
+{% block title %}信息管理平台首页{% endblock %}
+{% block content %}
+<h1 style="text-align:center;color:#2c3e50;margin-bottom:16px;">信息管理平台</h1>
+<div style="display:flex;justify-content:center;gap:48px;margin-bottom:36px;">
+  <a href="/blog/" style="text-decoration:none;">
+    <div style="background:#e3f2fd;border-radius:16px;box-shadow:0 2px 12px #bbdefb;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
+      <span style="font-size:2.2em;">📝</span>
+      <div style="font-size:1.3em;font-weight:700;color:#1976d2;margin-top:8px;">博客数量</div>
+      <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ blog_count }}</div>
     </div>
-    <!-- 数据总览卡片，卡片可点击跳转 -->
-    <div style="display:flex;justify-content:center;gap:48px;margin-bottom:36px;">
-      <a href="/blog/" style="text-decoration:none;">
-        <div style="background:#e3f2fd;border-radius:16px;box-shadow:0 2px 12px #bbdefb;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
-          <span style="font-size:2.2em;">📝</span>
-          <div style="font-size:1.3em;font-weight:700;color:#1976d2;margin-top:8px;">博客数量</div>
-          <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ blog_count }}</div>
-        </div>
-      </a>
-      <a href="/real_estate/" style="text-decoration:none;">
-        <div style="background:#e8f5e9;border-radius:16px;box-shadow:0 2px 12px #c8e6c9;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
-          <span style="font-size:2.2em;">🏢</span>
-          <div style="font-size:1.3em;font-weight:700;color:#388e3c;margin-top:8px;">房产条目</div>
-          <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ realestate_count }}</div>
-        </div>
-      </a>
-      <a href="/stock/" style="text-decoration:none;">
-        <div style="background:#fff3e0;border-radius:16px;box-shadow:0 2px 12px #ffe0b2;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
-          <span style="font-size:2.2em;">💹</span>
-          <div style="font-size:1.3em;font-weight:700;color:#e65100;margin-top:8px;">股票行情</div>
-          <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ stock_count }}</div>
-        </div>
-      </a>
+  </a>
+  <a href="/real_estate/" style="text-decoration:none;">
+    <div style="background:#e8f5e9;border-radius:16px;box-shadow:0 2px 12px #c8e6c9;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
+      <span style="font-size:2.2em;">🏢</span>
+      <div style="font-size:1.3em;font-weight:700;color:#388e3c;margin-top:8px;">房产条目</div>
+      <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ realestate_count }}</div>
     </div>
-
+  </a>
+  <a href="/stock/" style="text-decoration:none;">
+    <div style="background:#fff3e0;border-radius:16px;box-shadow:0 2px 12px #ffe0b2;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
+      <span style="font-size:2.2em;">💹</span>
+      <div style="font-size:1.3em;font-weight:700;color:#e65100;margin-top:8px;">股票行情</div>
+      <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ stock_count }}</div>
     </div>
-</body>
-</html>
+  </a>
+</div>
+{% endblock %}

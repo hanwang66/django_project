@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-full" style="box-shadow:0 2px 16px #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:110px;">
+    <nav class="navbar navbar-full" style="box-shadow:0 2px 16px #e0e0e0;display:flex;flex-direction:column;align-items:center;justify-content:center;height:110px;position:relative;">
         <div class="navbar-logo" style="font-size:2.6em;font-weight:800;color:#1976d2;display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:12px;">
             <span style="font-size:2em;">🗂️</span>
             <span>信息管理平台</span>
         </div>
         <div class="navbar-links" style="display:flex;justify-content:center;gap:48px;">
             <a href="/" class="nav-link{% if request.path == '/' %} active{% endif %}" style="display:flex;align-items:center;gap:10px;font-size:1.5em;padding:8px 28px;">
-                <span style="font-size:1.3em;">🏠</span> 首页
+                <span style="font-size:1.3em;">🏠</span> 概况
             </a>
             <a href="/blog/" class="nav-link{% if request.path|slice:":6" == '/blog/' %} active{% endif %}" style="display:flex;align-items:center;gap:10px;font-size:1.5em;padding:8px 28px;">
                 <span style="font-size:1.3em;">📝</span> 博客
@@ -24,6 +24,16 @@
             <a href="/stock/" class="nav-link{% if request.path|slice:":7" == '/stock/' %} active{% endif %}" style="display:flex;align-items:center;gap:10px;font-size:1.5em;padding:8px 28px;">
                 <span style="font-size:1.3em;">💹</span> 股票行情
             </a>
+        </div>
+        <div style="position:absolute;right:48px;top:24px;display:flex;align-items:center;gap:18px;">
+            {% if user.is_authenticated %}
+                <span style="color:#1976d2;font-weight:600;">欢迎，{{ user.username }}</span>
+                <a href="/profile/" style="color:#388e3c;font-weight:500;">个人中心</a>
+                <a href="/auth/logout/" style="color:#e65100;font-weight:500;">登出</a>
+            {% else %}
+                <a href="/auth/login/" style="color:#1976d2;font-weight:500;">登录</a>
+                <a href="/auth/register/" style="color:#388e3c;font-weight:500;">注册</a>
+            {% endif %}
         </div>
     </nav>
     <div class="container container-no-top-radius container-no-bottom-radius">

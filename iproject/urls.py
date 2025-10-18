@@ -17,7 +17,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.conf import settings
+from django.conf.urls.static import static
 
 def index(request):
     if not request.user.is_authenticated:
@@ -34,12 +36,14 @@ def index(request):
         "stock_count": stock_count,
     })
 
+from custom_auth.views import profile_view
+
 urlpatterns = [
     path('', index, name='index'),
     path("admin/", admin.site.urls),
     path("auth/", include("custom_auth.urls")),
+    path("profile/", profile_view, name='profile'),
     path("blog/", include("blog.urls")),
-    # path("info/", include("info.urls")),  # 已删除信息录入功能
     path("stock/", include("stock.urls")),
     path("real_estate/", include("real_estate.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
