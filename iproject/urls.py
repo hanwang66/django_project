@@ -20,7 +20,17 @@ from django.urls import path, include
 from django.shortcuts import render
 
 def index(request):
-    return render(request, "index.html")
+    from blog.models import Blog
+    from real_estate.models import RealEstate
+    from stock.models import Stock
+    blog_count = Blog.objects.count()
+    realestate_count = RealEstate.objects.count()
+    stock_count = Stock.objects.count()
+    return render(request, "index.html", {
+        "blog_count": blog_count,
+        "realestate_count": realestate_count,
+        "stock_count": stock_count,
+    })
 
 urlpatterns = [
     path('', index, name='index'),
