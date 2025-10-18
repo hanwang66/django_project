@@ -37,7 +37,17 @@ def realestate_trend_list(request):
 					'community': community,
 					'first_unit_price': first_unit_price,
 					'last_unit_price': last_unit_price,
-					'change': change
+					'change': change,
+					'first_detail': {
+						'date': first.date,
+						'price': first.price,
+						'area': first.area
+					},
+					'last_detail': {
+						'date': last.date,
+						'price': last.price,
+						'area': last.area
+					}
 				})
 		city_trends = sorted(city_trends, key=lambda x: abs(x['change']), reverse=True)[:top_n]
 		trend_list.append({'city': city, 'trends': city_trends})
