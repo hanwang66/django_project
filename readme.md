@@ -12,6 +12,7 @@
    # Python 3.10.0
    python -m venv .venv
    .venv\Scripts\activate.bat
+   git push -u origin feature/blog main
    ```
 
 3. 安装依赖包：

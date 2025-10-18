@@ -1,57 +1,79 @@
 {% extends 'base/base.html' %}
 {% block title %}博客详情{% endblock %}
 {% block content %}
-<h1>{{ blog.title }}</h1>
-<p>作者：{{ blog.author }} | 创建时间：{{ blog.created_at|date:'Y-m-d H:i' }}</p>
-<p>
-	分类：{% if blog.category %}{{ blog.category.name }}{% else %}无{% endif %}<br>
-	标签：
-	{% if blog.tags.all %}
+<div class="blog-detail-card" style="max-width:800px;margin:32px auto;background:#fff;border-radius:12px;box-shadow:0 2px 16px #eee;padding:32px 36px;">
+	<h1 style="margin-bottom:8px;font-size:2.2em;font-weight:600;">{{ blog.title }}</h1>
+	<div style="color:#888;font-size:1em;margin-bottom:18px;">
+		作者：<span style="color:#333;font-weight:500;">{{ blog.author }}</span>
+		&nbsp;|&nbsp; 创建时间：{{ blog.created_at|date:'Y-m-d H:i' }}
+	</div>
+	<div style="margin-bottom:18px;">
+		<span style="color:#888;">分类：</span>
+		<span style="background:#e3f2fd;color:#1976d2;padding:2px 12px;border-radius:8px;font-size:0.98em;">
+			{% if blog.category %}{{ blog.category.name }}{% else %}无{% endif %}
+		</span>
+		<span style="color:#888;margin-left:18px;">标签：</span>
 		{% for tag in blog.tags.all %}
-			<span style="background:#e0e0e0;padding:2px 8px;border-radius:8px;margin-right:4px;">{{ tag.name }}</span>
-		{% empty %}无{% endfor %}
-	{% else %}无{% endif %}
-</p>
-<div style="margin:24px 0;">{{ blog.content }}</div>
+			<span style="background:#ffe0b2;color:#e65100;padding:2px 10px;border-radius:8px;margin-right:6px;font-size:0.98em;">{{ tag.name }}</span>
+		{% empty %}<span style="color:#bbb;">无</span>{% endfor %}
+	</div>
+	<div style="margin:32px 0 40px 0;font-size:1.18em;line-height:1.9;color:#222;border-left:4px solid #1976d2;padding-left:18px;">{{ blog.content }}</div>
 
-<h3>评论区</h3>
-<form method="post" style="margin-bottom:18px;">{% csrf_token %}
-	<input type="hidden" name="parent_id" value="">
-	<input type="text" name="user" placeholder="昵称" style="width:120px;">
-	<textarea name="content" rows="2" cols="50" required placeholder="说点什么..."></textarea>
-	<button type="submit">发表评论</button>
-</form>
+	<div class="blog-actions" style="margin-bottom:24px;text-align:right;">
+		<a href="/blog/{{ blog.id }}/edit/" style="color:#1976d2;margin-right:18px;">编辑</a>
+		<a href="/blog/{{ blog.id }}/delete/" style="color:#e65100;margin-right:18px;">删除</a>
+		<a href="/blog/" style="color:#888;">返回列表</a>
+	</div>
 
-<ul style="list-style:none;padding-left:0;">
-	{% for comment in comments %}
-	<li style="margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:8px;">
-		<b>{{ comment.user }}</b>：{{ comment.content }}
-		{% if comment.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
-		<br><small>{{ comment.created_at|date:'Y-m-d H:i' }}</small>
-		<form method="post" style="display:inline;" onsubmit="this.parent_id.value='{{ comment.id }}';">
-			{% csrf_token %}
-			<input type="hidden" name="parent_id" value="{{ comment.id }}">
-			<input type="text" name="user" placeholder="昵称" style="width:100px;">
-			<input type="text" name="content" placeholder="回复..." style="width:180px;">
-			<button type="submit">回复</button>
+	<div class="comment-section" style="margin-top:32px;">
+		<h3 style="font-size:1.3em;font-weight:500;margin-bottom:18px;color:#1976d2;">评论区</h3>
+		<form method="post" style="margin-bottom:18px;background:#f5f5f5;padding:18px 16px;border-radius:8px;">{% csrf_token %}
+			<input type="hidden" name="parent_id" value="">
+			<input type="text" name="user" placeholder="昵称" style="width:120px;margin-right:12px;">
+			<textarea name="content" rows="2" cols="50" required placeholder="说点什么..." style="vertical-align:middle;"></textarea>
+			<button type="submit" style="background:#1976d2;color:#fff;border:none;padding:6px 18px;border-radius:6px;margin-left:12px;">发表评论</button>
 		</form>
-		<div style="margin-left:24px;">
-		{% for reply in comment.replies.all %}
-			{% if reply.is_approved %}
-			<b>{{ reply.user }}</b> 回复：{{ reply.content }}
-			<br><small>{{ reply.created_at|date:'Y-m-d H:i' }}</small>
-			{% if reply.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
-			<br>
-			{% endif %}
-		{% endfor %}
-		</div>
-	</li>
-	{% empty %}
-	<li>暂无评论。</li>
-	{% endfor %}
-</ul>
 
-<a href="/blog/{{ blog.id }}/edit/">编辑</a> |
-<a href="/blog/{{ blog.id }}/delete/">删除</a> |
-<a href="/blog/">返回列表</a>
+		<ul style="list-style:none;padding-left:0;">
+			{% for comment in comments %}
+			<li style="margin-bottom:22px;border-bottom:1px solid #eee;padding-bottom:12px;">
+				<div style="font-weight:500;color:#333;margin-bottom:4px;">
+					<span style="color:#1976d2;">{{ comment.user }}</span>：{{ comment.content }}
+					{% if comment.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
+				</div>
+				<div style="font-size:0.98em;color:#888;margin-bottom:6px;">
+					{{ comment.created_at|date:'Y-m-d H:i' }}
+					<form method="post" style="display:inline;margin-left:18px;">
+						{% csrf_token %}
+						<input type="hidden" name="like_comment_id" value="{{ comment.id }}">
+						<button type="submit" style="background:#ffecb3;color:#e65100;border:none;padding:2px 10px;border-radius:6px;cursor:pointer;">
+							👍 点赞 <span style="font-weight:600;">{{ comment.likes }}</span>
+						</button>
+					</form>
+				</div>
+				<form method="post" style="display:inline;" onsubmit="this.parent_id.value='{{ comment.id }}';">
+					{% csrf_token %}
+					<input type="hidden" name="parent_id" value="{{ comment.id }}">
+					<input type="text" name="user" placeholder="昵称" style="width:100px;margin-right:8px;">
+					<input type="text" name="content" placeholder="回复..." style="width:180px;margin-right:8px;">
+					<button type="submit" style="background:#e3f2fd;color:#1976d2;border:none;padding:4px 12px;border-radius:6px;">回复</button>
+				</form>
+				<div style="margin-left:32px;margin-top:8px;">
+				{% for reply in comment.replies.all %}
+					{% if reply.is_approved %}
+					<div style="margin-bottom:6px;">
+						<span style="color:#388e3c;font-weight:500;">{{ reply.user }}</span> 回复：{{ reply.content }}
+						<span style="font-size:0.95em;color:#888;margin-left:8px;">{{ reply.created_at|date:'Y-m-d H:i' }}</span>
+						{% if reply.has_sensitive %}<span style="color:red;">[含敏感词，待审核]</span>{% endif %}
+					</div>
+					{% endif %}
+				{% endfor %}
+				</div>
+			</li>
+			{% empty %}
+			<li style="color:#bbb;">暂无评论。</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
 {% endblock %}

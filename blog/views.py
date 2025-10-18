@@ -10,6 +10,13 @@ def blog_detail(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
 	comments = Comment.objects.filter(blog=blog, parent=None, is_approved=True).order_by('-created_at')
 	if request.method == "POST":
+		if request.POST.get("like_comment_id"):
+			comment_id = request.POST.get("like_comment_id")
+			comment = Comment.objects.filter(id=comment_id).first()
+			if comment:
+				comment.likes += 1
+				comment.save()
+			return redirect(f"/blog/{pk}/")
 		user = request.POST.get("user", "匿名")
 		content = request.POST.get("content", "")
 		parent_id = request.POST.get("parent_id")
