@@ -20,7 +20,8 @@
                     <th style="padding:10px 22px;border-top-left-radius:12px;">小区</th>
                     <th style="padding:10px 22px;">首单价(元/㎡)</th>
                     <th style="padding:10px 22px;">末单价(元/㎡)</th>
-                    <th style="padding:10px 22px;border-top-right-radius:12px;">变化幅度</th>
+                    <th style="padding:10px 22px;">变化幅度</th>
+                    <th style="padding:10px 22px;border-top-right-radius:12px;">详情</th>
                 </tr>
                 {% for t in city_group.trends %}
                 {% if forloop.counter0|divisibleby:2 %}
@@ -38,6 +39,16 @@
                     {% else %}
                     <td style="padding:8px 22px;color:#888;font-weight:bold;background:#f6f8fa;border-radius:6px;">{{ t.change }}%</td>
                     {% endif %}
+                    <td style="padding:8px 22px;font-size:0.98em;line-height:1.7;">
+                        <b>首：</b>{{ t.first_detail.date|date:'Y-m-d' }}<br>
+                        总价:{{ t.first_detail.price }}万<br>
+                        面积:{{ t.first_detail.area }}㎡<br>
+                        单价:{{ t.first_unit_price }}元/㎡<br>
+                        <b>末：</b>{{ t.last_detail.date|date:'Y-m-d' }}<br>
+                        总价:{{ t.last_detail.price }}万<br>
+                        面积:{{ t.last_detail.area }}㎡<br>
+                        单价:{{ t.last_unit_price }}元/㎡
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
