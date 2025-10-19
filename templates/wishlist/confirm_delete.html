@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% block title %}确认删除{% endblock %}
+{% block content %}
+<h2>确认删除</h2>
+<p>{{ message }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">确认删除</button>
+    <a href="{{ cancel_url }}" class="btn btn-secondary" style="margin-left:18px;">取消</a>
+</form>
+{% endblock %}

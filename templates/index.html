@@ -1,8 +1,8 @@
 {% extends 'base/base.html' %}
 {% block title %}信息管理平台首页{% endblock %}
 {% block content %}
-<h1 style="text-align:center;color:#2c3e50;margin-bottom:16px;">信息管理平台</h1>
-<div style="display:flex;justify-content:center;gap:48px;margin-bottom:36px;">
+<h1 style="text-align:center;color:#2c3e50;margin-bottom:16px;">概况总览</h1>
+<div style="display:flex;justify-content:center;gap:48px;margin-bottom:36px;flex-wrap:wrap;">
   <a href="/blog/" style="text-decoration:none;">
     <div style="background:#e3f2fd;border-radius:16px;box-shadow:0 2px 12px #bbdefb;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
       <span style="font-size:2.2em;">📝</span>
@@ -22,6 +22,14 @@
       <span style="font-size:2.2em;">💹</span>
       <div style="font-size:1.3em;font-weight:700;color:#e65100;margin-top:8px;">股票行情</div>
       <div style="font-size:2em;font-weight:800;color:#222;margin-top:8px;">{{ stock_count }}</div>
+    </div>
+  </a>
+  <a href="/wishlist/" style="text-decoration:none;">
+    <div style="background:#f3e5f5;border-radius:16px;box-shadow:0 2px 12px #ce93d8;padding:32px 48px;min-width:220px;display:flex;flex-direction:column;align-items:center;transition:box-shadow 0.2s;cursor:pointer;">
+      <span style="font-size:2.2em;">🎯</span>
+      <div style="font-size:1.3em;font-weight:700;color:#8e24aa;margin-top:8px;">愿望清单</div>
+      <div style="font-size:1.1em;color:#8e24aa;margin-top:8px;">清单数：<b>{{ wishlist_count }}</b></div>
+      <div style="font-size:1.1em;color:#8e24aa;margin-top:2px;">小项数：<b>{{ wishlistitem_count }}</b></div>
     </div>
   </a>
 </div>

@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block title %}添加子清单{% endblock %}
+{% block content %}
+<h2>添加子清单到：{{ wishlist.name }}</h2>
+<form method="post" style="max-width:400px;margin:0 auto;display:flex;flex-direction:column;gap:18px;">
+    {% csrf_token %}
+    <div>
+        <label>名称</label>
+        <input type="text" name="name" class="form-control" required>
+    </div>
+    <div>
+        <label>价格</label>
+        <input type="number" name="price" class="form-control" step="0.01" min="0">
+    </div>
+    <div>
+        <label>简介</label>
+        <textarea name="description" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success">添加</button>
+</form>
+{% endblock %}
