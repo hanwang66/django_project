@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block title %}编辑小项目{% endblock %}
+{% block content %}
+<h2>编辑小项目</h2>
+<form method="post" style="max-width:400px;margin:0 auto;display:flex;flex-direction:column;gap:18px;">
+    {% csrf_token %}
+    <div>
+        <label>名称</label>
+        <input type="text" name="name" class="form-control" value="{{ item.name }}" required>
+    </div>
+    <div>
+        <label>价格</label>
+        <input type="number" name="price" class="form-control" step="0.01" min="0" value="{{ item.price }}">
+    </div>
+    <div>
+        <label>简介</label>
+        <textarea name="description" class="form-control">{{ item.description }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-success">保存修改</button>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block title %}编辑愿望清单{% endblock %}
+{% block content %}
+<h2>编辑愿望清单</h2>
+<form method="post" style="max-width:400px;margin:0 auto;display:flex;flex-direction:column;gap:18px;">
+    {% csrf_token %}
+    <div>
+        <label>清单名称</label>
+        <input type="text" name="name" class="form-control" value="{{ wishlist.name }}" required>
+    </div>
+    <div>
+        <label>简介</label>
+        <textarea name="description" class="form-control">{{ wishlist.description }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">保存修改</button>
+</form>
+{% endblock %}

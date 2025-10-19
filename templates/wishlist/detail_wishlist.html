@@ -1,0 +1,138 @@
+{% extends 'base/base.html' %}
+{% block title %}清单详情{% endblock %}
+{% block content %}
+<style>
+    .wishlist-table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 2px 12px #e0e0e0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+    }
+    .wishlist-table th, .wishlist-table td {
+        padding: 12px 8px;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+    }
+    .wishlist-table th {
+        background: #f7f7f7;
+        font-weight: bold;
+    }
+    .wishlist-table tr:hover {
+        background: #f5f5fa;
+        transition: background 0.2s;
+    }
+    .tag-done {
+        background: #e8f5e9;
+        color: #388e3c;
+        border-radius: 16px;
+        padding: 2px 12px;
+        font-size: 0.95em;
+        margin-left: 8px;
+        display: inline-block;
+    }
+    .tag-undone {
+        background: #fff3e0;
+        color: #e65100;
+        border-radius: 16px;
+        padding: 2px 12px;
+        font-size: 0.95em;
+        margin-left: 8px;
+        display: inline-block;
+    }
+    .action-btns a {
+        margin-right: 8px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+    @media (max-width: 700px) {
+        .wishlist-table, .wishlist-table th, .wishlist-table td {
+            font-size: 0.95em;
+            padding: 8px 4px;
+        }
+        .wishlist-table th, .wishlist-table td {
+            min-width: 80px;
+        }
+        .wishlist-table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
+</style>
+<div style="max-width:800px;margin:0 auto;">
+    <h2 style="margin-bottom:8px;font-weight:700;letter-spacing:1px;">{{ wishlist.name }}</h2>
+    <div style="color:#888;margin-bottom:18px;">{{ wishlist.description|default:'无简介' }}</div>
+        {% if total > 0 %}
+        <div style="margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div style="font-size:1.05em;color:#666;">
+                共 <b>{{ total }}</b> 项，已完成 <b style="color:#388e3c;">{{ done_count }}</b> 项，未完成 <b style="color:#e65100;">{{ undone_count }}</b> 项<br>
+                总金额：<b style="color:#1976d2;">￥{{ total_price }}</b>，未完成金额：<b style="color:#e65100;">￥{{ undone_price }}</b>
+            </div>
+            <div style="flex:1;min-width:120px;margin:0 18px;">
+                <div style="height:8px;background:#f0f0f0;border-radius:8px;overflow:hidden;">
+                    <div style="height:8px;background:#388e3c;border-radius:8px;width:{{ percent }}%;transition:width 0.5s;"></div>
+                </div>
+                <div style="font-size:0.95em;color:#888;margin-top:2px;text-align:right;">{{ percent }}%</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <a href="?status=all" class="btn btn-outline-secondary btn-sm{% if filter_status == 'all' %} active{% endif %}">全部</a>
+                <a href="?status=undone" class="btn btn-outline-warning btn-sm{% if filter_status == 'undone' %} active{% endif %}">未完成</a>
+                <a href="?status=done" class="btn btn-outline-success btn-sm{% if filter_status == 'done' %} active{% endif %}">已完成</a>
+            </div>
+            <a href="/wishlist/{{ wishlist.id }}/add_item/" class="btn btn-success"><i class="bi bi-plus-circle"></i> 添加小项目</a>
+        </div>
+        {% else %}
+        <div style="margin-bottom:18px;text-align:right;">
+            <a href="/wishlist/{{ wishlist.id }}/add_item/" class="btn btn-success"><i class="bi bi-plus-circle"></i> 添加小项目</a>
+        </div>
+        {% endif %}
+        {% if items %}
+        <div style="display:flex;flex-direction:column;gap:18px;">
+            {% for item in items %}
+            <div style="position:relative;box-shadow:0 2px 10px #e0e0e0;border-radius:12px;padding:18px 18px 14px 18px;background:#fff;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="font-size:1.15em;font-weight:600;">
+                        {{ item.name }}
+                        {% if item.is_done %}
+                            <span class="tag-done" style="margin-left:10px;"><i class="bi bi-check-circle-fill"></i> 已完成</span>
+                        {% else %}
+                            <span class="tag-undone" style="margin-left:10px;"><i class="bi bi-circle"></i> 未完成</span>
+                        {% endif %}
+                    </div>
+                    <div style="font-size:1.1em;color:#1976d2;font-weight:500;">
+                        {% if item.price %}￥{{ item.price }}{% else %}-{% endif %}
+                    </div>
+                </div>
+                <div style="color:#666;font-size:1em;">{{ item.description|default:'无' }}</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <div style="color:#aaa;font-size:0.95em;">{{ item.created_at|date:'Y-m-d H:i' }}</div>
+                    <div class="action-btns" style="display:flex;gap:8px;">
+                        <a href="/wishlist/{{ wishlist.id }}/item/{{ item.id }}/edit/" class="btn btn-sm btn-info rounded-pill" title="编辑">
+                            <i class="bi bi-pencil"></i> 编辑
+                        </a>
+                        <a href="/wishlist/{{ wishlist.id }}/item/{{ item.id }}/delete/" class="btn btn-sm btn-danger rounded-pill" title="删除">
+                            <i class="bi bi-trash"></i> 删除
+                        </a>
+                        {% if not item.is_done %}
+                            <a href="/wishlist/{{ wishlist.id }}/item/{{ item.id }}/done/" class="btn btn-sm btn-success rounded-pill" title="标记完成">
+                                <i class="bi bi-check-lg"></i> 标记完成
+                            </a>
+                        {% else %}
+                            <a href="/wishlist/{{ wishlist.id }}/item/{{ item.id }}/undone/" class="btn btn-sm btn-warning rounded-pill" title="取消完成">
+                                <i class="bi bi-arrow-counterclockwise"></i> 取消完成
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="color:#888;text-align:center;padding:40px 0;">
+            <img src="https://cdn.jsdelivr.net/gh/hanwang66/static-assets/empty-box.svg" alt="暂无小项目" style="width:120px;opacity:0.5;margin-bottom:12px;"/>
+            <div>暂无小项目，快来添加吧！</div>
+        </div>
+        {% endif %}
+</div>
+{% endblock %}

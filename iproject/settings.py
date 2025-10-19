@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # "info",  # 已删除信息录入功能
     "stock",
     "real_estate",
+    "wishlist",  # 新增愿望清单模块
 ]
 
 MIDDLEWARE = [

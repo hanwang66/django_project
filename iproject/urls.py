@@ -27,13 +27,18 @@ def index(request):
     from blog.models import Blog
     from real_estate.models import RealEstate
     from stock.models import Stock
+    from wishlist.models import Wishlist, WishlistItem
     blog_count = Blog.objects.count()
     realestate_count = RealEstate.objects.count()
     stock_count = Stock.objects.count()
+    wishlist_count = Wishlist.objects.count()
+    wishlistitem_count = WishlistItem.objects.count()
     return render(request, "index.html", {
         "blog_count": blog_count,
         "realestate_count": realestate_count,
         "stock_count": stock_count,
+        "wishlist_count": wishlist_count,
+        "wishlistitem_count": wishlistitem_count,
     })
 
 from custom_auth.views import profile_view
@@ -46,4 +51,5 @@ urlpatterns = [
     path("blog/", include("blog.urls")),
     path("stock/", include("stock.urls")),
     path("real_estate/", include("real_estate.urls")),
+    path('wishlist/', include('wishlist.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
