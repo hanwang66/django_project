@@ -1,6 +1,6 @@
 
 # Django 主体依赖
-Django>=5.0
+Django
 
 # Flask 相关依赖（如需 Flask 功能）
 Flask

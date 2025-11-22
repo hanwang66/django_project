@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    # Uncomment if you use a database service
+    # depends_on:
+    #   - db
+#  db:
+#    image: postgres:15
+#    environment:
+#      POSTGRES_DB: django_db
+#      POSTGRES_USER: django
+#      POSTGRES_PASSWORD: django
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - pgdata:/var/lib/postgresql/data
+#volumes:
+#  pgdata:
