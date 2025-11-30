@@ -11,7 +11,7 @@
    ```powershell
    # Python 3.10.0
    python -m venv .venv
-   .venv\Scripts\activate.bat
+   .\venv\Scripts\Activate.ps1
    git push -u origin feature/blog main
    ```
 
