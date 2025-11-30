@@ -15,6 +15,57 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    'filters': {
+        'request_id': {
+            '()': 'log_request_id.filters.RequestIDFilter' # 定义过滤器
+        }
+    },
+    'formatters': {
+        'standard': {
+            # 在格式中添加 [%(request_id)s]
+            'format': '%(levelname)-8s [%(asctime)s] [%(request_id)s] %(name)s: %(message)s'
+        },
+    },
+    "handlers": {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['request_id'], # 4. 绑定过滤器
+            'formatter': 'standard',   # 5. 绑定格式
+        },
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            'filters': ['request_id'], # 启用过滤器
+            'formatter': 'standard',
+            "filename": BASE_DIR / "performance.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "real_estate.middleware": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        'real_estate': { # 你的应用名称
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+# 可选配置：自定义 Request ID 的 HTTP 头名称
+# LOG_REQUEST_ID_HEADER = "HTTP_X_REQUEST_ID" 
+# LOG_REQUESTS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -27,7 +78,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,23 +87,34 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'corsheaders',
     "custom_auth",
     "blog",
-    # "info",  # 已删除信息录入功能
     "stock",
     "real_estate",
     "wishlist",  # 新增愿望清单模块
+    "tickets",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
+    'log_request_id.middleware.RequestIDMiddleware', 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "real_estate.middleware.RequestLoggingMiddleware",
+    "real_estate.middleware.PerformanceMonitoringMiddleware", 
+    'real_estate.middleware_demo.ApiKeyMiddleware',
+    'tickets.middleware.AuditLogMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = ["https://app.example.com", "https://admin.example.com"]
+
+MY_SECRET_API_KEY = "my-super-secret-key"
 
 ROOT_URLCONF = "iproject.urls"
 

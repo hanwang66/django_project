@@ -1,6 +1,25 @@
+from collections import defaultdict
+import logging
+
+from .models import RealEstate
+
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import RealEstate
+from django.db.models import Avg, Max, Min, Count, Sum
+from django.http import HttpResponse
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages 
+
+logger = logging.getLogger(__name__) 
+
+
+def is_admin(user):
+    return user.is_superuser
+
+
 def realestate_trend_list(request):
-	from collections import defaultdict
-	from .models import RealEstate
+	
 	all_estates = RealEstate.objects.all()
 	top_n = request.GET.get('top_n')
 	try:
@@ -52,7 +71,8 @@ def realestate_trend_list(request):
 		city_trends = sorted(city_trends, key=lambda x: abs(x['change']), reverse=True)[:top_n]
 		trend_list.append({'city': city, 'trends': city_trends})
 	return render(request, "real_estate/trend_list.html", {"trend_list": trend_list, "top_n": top_n})
-from django.http import JsonResponse
+
+
 def realestate_trend_data(request):
 	city = request.GET.get('city', '').strip()
 	community = request.GET.get('community', '').strip()
@@ -74,12 +94,10 @@ def realestate_trend_data(request):
 			dates.append(e.date)
 			unit_prices.append(unit_price)
 	return JsonResponse({'dates': dates, 'unit_prices': unit_prices})
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import RealEstate
-from django.db.models import Avg, Max, Min, Count, Sum
-from django.http import HttpResponse
+
 
 def realestate_index(request):
+	logger.info("进入 realestate_index 视图")
 	estates = RealEstate.objects.all()
 	city = request.GET.get('city', '').strip()
 	community = request.GET.get('community', '').strip()
@@ -166,11 +184,14 @@ def realestate_index(request):
 	})
 
 def realestate_detail(request, pk):
+	logger.info("进入 realestate_detail 视图")
 	estate = get_object_or_404(RealEstate, pk=pk)
 	return render(request, "real_estate/detail_realestate.html", {"estate": estate})
 
 def realestate_add(request):
+    
 	if request.method == "POST":
+		logger.info("正在处理添加房产的 POST 请求")
 		community = request.POST.get("community")
 		city = request.POST.get("city")
 		area = request.POST.get("area")
@@ -181,8 +202,12 @@ def realestate_add(request):
 		return redirect("/real_estate/")
 	return render(request, "real_estate/add_realestate.html")
 
+
 def realestate_edit(request, pk):
 	estate = get_object_or_404(RealEstate, pk=pk)
+	if not request.user.is_superuser:  # 检查是否是 admin 用户
+		messages.error(request, "非管理员用户无权添加数据。")  # 添加提示信息
+		return redirect("/real_estate/")  # 重定向到列表页
 	if request.method == "POST":
 		estate.community = request.POST.get("community")
 		estate.city = request.POST.get("city")

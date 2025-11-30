@@ -1,10 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Wishlist, WishlistItem
+from django.contrib.auth.decorators import user_passes_test
 
+# Helper function to check if the user is an admin
+def is_admin(user):
+    return user.is_superuser
+
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlist_list(request):
     wishlists = Wishlist.objects.all().order_by('-created_at')
     return render(request, 'wishlist/list_wishlist.html', {'wishlists': wishlists})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlist_detail(request, pk):
     wishlist = get_object_or_404(Wishlist, pk=pk)
     filter_status = request.GET.get('status', 'all')
@@ -33,6 +40,7 @@ def wishlist_detail(request, pk):
         'undone_price': undone_price
     })
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlist_add(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -41,6 +49,7 @@ def wishlist_add(request):
         return redirect('/wishlist/')
     return render(request, 'wishlist/add_wishlist.html')
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlistitem_add(request, wishlist_id):
     wishlist = get_object_or_404(Wishlist, pk=wishlist_id)
     if request.method == 'POST':
@@ -51,6 +60,7 @@ def wishlistitem_add(request, wishlist_id):
         return redirect(f'/wishlist/{wishlist_id}/')
     return render(request, 'wishlist/add_wishlistitem.html', {'wishlist': wishlist})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlist_edit(request, pk):
     wishlist = get_object_or_404(Wishlist, pk=pk)
     if request.method == 'POST':
@@ -60,6 +70,7 @@ def wishlist_edit(request, pk):
         return redirect(f'/wishlist/{pk}/')
     return render(request, 'wishlist/edit_wishlist.html', {'wishlist': wishlist})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlist_delete(request, pk):
     wishlist = get_object_or_404(Wishlist, pk=pk)
     if request.method == 'POST':
@@ -70,6 +81,7 @@ def wishlist_delete(request, pk):
         'cancel_url': f'/wishlist/{pk}/'
     })
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlistitem_edit(request, wishlist_id, item_id):
     item = get_object_or_404(WishlistItem, pk=item_id, wishlist_id=wishlist_id)
     if request.method == 'POST':
@@ -80,6 +92,7 @@ def wishlistitem_edit(request, wishlist_id, item_id):
         return redirect(f'/wishlist/{wishlist_id}/')
     return render(request, 'wishlist/edit_wishlistitem.html', {'item': item})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlistitem_delete(request, wishlist_id, item_id):
     item = get_object_or_404(WishlistItem, pk=item_id, wishlist_id=wishlist_id)
     if request.method == 'POST':
@@ -90,12 +103,14 @@ def wishlistitem_delete(request, wishlist_id, item_id):
         'cancel_url': f'/wishlist/{wishlist_id}/'
     })
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlistitem_done(request, wishlist_id, item_id):
     item = get_object_or_404(WishlistItem, pk=item_id, wishlist_id=wishlist_id)
     item.is_done = True
     item.save()
     return redirect(f'/wishlist/{wishlist_id}/')
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def wishlistitem_undone(request, wishlist_id, item_id):
     item = get_object_or_404(WishlistItem, pk=item_id, wishlist_id=wishlist_id)
     item.is_done = False

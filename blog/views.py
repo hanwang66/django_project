@@ -1,11 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Blog, Category, Tag, Comment
 from django.http import HttpResponse
+from django.contrib.auth.decorators import user_passes_test
 
+# Helper function to check if the user is an admin
+def is_admin(user):
+    return user.is_superuser
+
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def blog_index(request):
 	blogs = Blog.objects.all().order_by('-created_at')
 	return render(request, "blog/list_blog.html", {"blogs": blogs})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def blog_detail(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
 	comments = Comment.objects.filter(blog=blog, parent=None, is_approved=True).order_by('-created_at')
@@ -47,23 +54,7 @@ def blog_detail(request, pk):
 		return redirect(f"/blog/{pk}/")
 	return render(request, "blog/blog_detail.html", {"blog": blog, "comments": comments})
 
-	blog = get_object_or_404(Blog, pk=pk)
-	comments = Comment.objects.filter(blog=blog, parent=None, is_approved=True).order_by('-created_at')
-	if request.method == "POST":
-		user = request.POST.get("user", "匿名")
-		content = request.POST.get("content", "")
-		parent_id = request.POST.get("parent_id")
-		parent = Comment.objects.filter(id=parent_id).first() if parent_id else None
-		# 简单敏感词过滤
-		sensitive_words = ["傻逼", "垃圾", "fuck"]
-		has_sensitive = any(word in content for word in sensitive_words)
-		comment = Comment.objects.create(
-			blog=blog, user=user, content=content, parent=parent,
-			is_approved=not has_sensitive, has_sensitive=has_sensitive
-		)
-		return redirect(f"/blog/{pk}/")
-	return render(request, "blog/blog_detail.html", {"blog": blog, "comments": comments})
-
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def blog_add(request):
 	categories = Category.objects.all()
 	tags = Tag.objects.all()
@@ -81,6 +72,7 @@ def blog_add(request):
 		return redirect("/blog/")
 	return render(request, "blog/add_blog.html", {"categories": categories, "tags": tags, "user": request.user})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def blog_edit(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
 	# 权限校验：仅作者或admin可编辑
@@ -104,6 +96,7 @@ def blog_edit(request, pk):
 		return redirect(f"/blog/{pk}/")
 	return render(request, "blog/edit_blog.html", {"blog": blog, "categories": categories, "tags": tags, "user": request.user})
 
+@user_passes_test(is_admin, login_url='/auth/login/', redirect_field_name=None)
 def blog_delete(request, pk):
 	blog = get_object_or_404(Blog, pk=pk)
 	# 权限校验：仅作者或admin可删除
