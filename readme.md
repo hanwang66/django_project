@@ -42,7 +42,6 @@
    docker-compose up --build
    ```
 
-
 7. 在浏览器访问 http://127.0.0.1:8000/
 
 8. 默认管理员账号：admin / admin
