@@ -88,6 +88,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'corsheaders',
+    'rest_framework',
+    'django_filters',
     "custom_auth",
     "blog",
     "stock",
@@ -111,6 +113,18 @@ MIDDLEWARE = [
     'real_estate.middleware_demo.ApiKeyMiddleware',
     'tickets.middleware.AuditLogMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+}
 
 CORS_ALLOWED_ORIGINS = ["https://app.example.com", "https://admin.example.com"]
 
