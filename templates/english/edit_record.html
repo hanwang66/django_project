@@ -1,0 +1,10 @@
+{% extends 'base/base.html' %}
+{% block title %}提交英语学习记录{% endblock %}
+{% block content %} 
+<h2>编辑英语学习记录</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">保存</button>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+{% block title %}提交英语学习记录{% endblock %}
+{% block content %}
+<h2>确认删除英语学习记录</h2>
+<p>确定要删除这条记录吗？</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">确认删除</button>
+    <a href="{% url 'english:overview' %}">取消</a>
+</form>
+{% endblock %}

@@ -27,6 +27,9 @@
             <a href="/wishlist/" class="nav-link{% if request.path|slice:":9" == '/wishlist/' %} active{% endif %}" style="display:flex;align-items:center;gap:10px;font-size:1.5em;padding:8px 28px;">
                 <span style="font-size:1.3em;">🎯</span> 愿望清单
             </a>
+            <a href="/english/overview/" class="nav-link{% if request.path|slice:":9" == '/english/' %} active{% endif %}" style="display:flex;align-items:center;gap:10px;font-size:1.5em;padding:8px 28px;">
+                <span style="font-size:1.3em;">🎯</span> 英语学习总览
+            </a>
         </div>
         <div style="position:absolute;right:48px;top:24px;display:flex;align-items:center;gap:18px;">
             {% if user.is_authenticated %}

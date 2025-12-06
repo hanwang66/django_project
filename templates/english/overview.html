@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block title %}提交英语学习记录{% endblock %}
+{% block content %} 
+<h2>英语学习总览</h2>
+<p>总学习时长：{{ total_duration }} 分钟</p>
+<ul>
+    {% for record in records %}
+    <li>
+        {{ record.date }}: {{ record.title }} ({{ record.duration }}分钟)
+        <a href="{% url 'english:record_detail' record.pk %}">查看</a>
+        <a href="{% url 'english:edit_record' record.pk %}">编辑</a>
+        <a href="{% url 'english:delete_record' record.pk %}">删除</a>
+    </li>
+    {% endfor %}
+</ul>
+<a href="{% url 'english:submit_record' %}">新增学习记录</a>
+{% endblock %}

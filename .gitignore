@@ -7,9 +7,9 @@ __pycache__/
 .env
 .venv/
 venv/
-myenv/
 ENV/
 env/
+py311/
 *.sqlite3
 *.db
 
