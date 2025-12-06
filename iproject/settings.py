@@ -76,7 +76,7 @@ SECRET_KEY = "django-insecure-wv3_w@ob!z(8r#okf%t(p(zzborp8$@3r2pbvqrye#(55(ef9e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.18.133']
 
 # Application definition
 
@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     "real_estate",
     "wishlist",  # 新增愿望清单模块
     "tickets",
+    "english",
 ]
 
 MIDDLEWARE = [

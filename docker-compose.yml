@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - /home/hanwang/work/:/app
+      - /home/hanwang/work/django_project/:/app
     environment:
       - PYTHONUNBUFFERED=1
     # Uncomment if you use a database service

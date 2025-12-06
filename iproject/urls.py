@@ -52,4 +52,5 @@ urlpatterns = [
     path("stock/", include("stock.urls")),
     path("real_estate/", include("real_estate.urls")),
     path('wishlist/', include('wishlist.urls')),
+    path('english/', include('english.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
