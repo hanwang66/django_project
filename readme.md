@@ -35,7 +35,14 @@
 6. 启动项目：
    ```powershell
    python manage.py runserver
+
    ```
+
+   用docker-compose启动
+   ```
+   docker-compose up --build
+   ```
+
 
 7. 在浏览器访问 http://127.0.0.1:8000/
 
