@@ -18,6 +18,7 @@
 3. 安装依赖包：
    ```powershell
    pip install -r requirements.txt
+   pip freeze > requirements.txt 
    ```
 
 4. 数据库迁移：
